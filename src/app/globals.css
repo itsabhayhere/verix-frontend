@@ -1,49 +1,134 @@
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-@media (prefers-color-scheme: dark) {
+@layer base {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    /* --- The Soothing Base --- */
+    --bg-base: #EDF6F9;       /* Alice Blue: Clean & Airy */
+    --bg-surface: #FFFFFF;    /* Pure White */
+    --bg-surface-raised: #F8FDFF; 
+    --bg-muted: #E2EAF1;
+  
+    /* --- The Anchors (Accents) --- */
+    --accent-primary: #006D77;   /* Stormy Teal */
+    --accent-secondary: #83C5BE; /* Pearl Aqua */
+    --accent-vibrant: #E29578;   /* Tangerine Dream (CTA) */
+    --accent-soft: #FFDDD2;      /* Almond Silk */
+  
+    /* --- Typography --- */
+    --text-primary: #003049;     /* Deep Navy */
+    --text-secondary: #006D77;   /* Teal */
+    --text-tertiary: #6B7280;    /* Muted Slate */
+  
+    /* --- Lines & Softness --- */
+    --border: rgba(0, 109, 119, 0.08);
+    --border-strong: rgba(0, 109, 119, 0.15);
+    
+    /* --- Radii & "Cloud" Shadows --- */
+    --radius-lg: 24px;
+    --radius-md: 16px;
+    --shadow-premium: 0 20px 50px rgba(0, 48, 73, 0.05);
   }
-}
 
-html {
-  height: 100%;
-}
-
-html,
-body {
-  max-width: 100vw;
-  overflow-x: hidden;
-}
-
-body {
-  min-height: 100%;
-  display: flex;
-  flex-direction: column;
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-* {
-  box-sizing: border-box;
-  padding: 0;
-  margin: 0;
-}
-
-a {
-  color: inherit;
-  text-decoration: none;
-}
-
-@media (prefers-color-scheme: dark) {
   html {
-    color-scheme: dark;
+    scroll-behavior: smooth;
+    text-rendering: optimizeLegibility;
   }
+
+  body {
+    background-color: var(--bg-base);
+    color: var(--text-primary);
+    font-family: 'DM Sans', system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    /* Soft, organic radial gradient for "Cloud" depth */
+    background-image: radial-gradient(at 0% 0%, #FFFFFF 0%, #EDF6F9 100%);
+    background-attachment: fixed;
+  }
+}
+
+@layer components {
+  /* ── 01. The "Organic Glass" Utility ── 
+     Transparent Teal-White instead of Navy.
+  */
+  .glass {
+    background: rgba(255, 255, 255, 0.6);
+    backdrop-filter: blur(12px) saturate(120%);
+    -webkit-backdrop-filter: blur(12px) saturate(120%);
+    border: 1px solid rgba(131, 197, 190, 0.2);
+    box-shadow: var(--shadow-premium);
+  }
+
+  /* ── 02. Soft Interaction Cards ── */
+  .interactive-card {
+    @apply transition-all duration-500 ease-out;
+    background: var(--bg-surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+  }
+
+  .interactive-card:hover {
+    border-color: var(--accent-secondary);
+    transform: translateY(-6px);
+    box-shadow: 0 30px 60px rgba(0, 48, 73, 0.08);
+    background: var(--bg-surface-raised);
+  }
+
+  /* ── 03. Custom "Pebble" Scrollbar ── */
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
+  ::-webkit-scrollbar-track {
+    background: var(--bg-base);
+  }
+  ::-webkit-scrollbar-thumb {
+    background: var(--accent-secondary);
+    border-radius: 10px;
+    border: 2px solid var(--bg-base);
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--accent-primary);
+  }
+  .form-input {
+    width: 100%;
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: 12px 20px;
+    font-size: 14px;
+    color: var(--text-primary);
+    font-family: var(--font-dm-sans), sans-serif; /* Use the variable! */
+    outline: none;
+    transition: all 0.3s;
+  }
+  .form-input:focus {
+    border-color: var(--accent-secondary);
+    box-shadow: 0 0 0 4px var(--bg-muted);
+  }
+}
+
+/* ── 04. Whimsical Micro-Animations ── */
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-5px); }
+}
+
+.animate-float {
+  animation: float 4s ease-in-out infinite;
+}
+
+/* ── 05. Selection & Input Polish ── */
+::selection {
+  background-color: var(--accent-soft);
+  color: var(--accent-primary);
+}
+
+/* Date input fix for Light Mode */
+input[type="date"]::-webkit-calendar-picker-indicator {
+  filter: sepia(100%) saturate(500%) hue-rotate(130deg) brightness(0.6);
+  cursor: pointer;
+  opacity: 0.6;
+}
+input[type="date"]::-webkit-calendar-picker-indicator:hover {
+  opacity: 1;
 }
