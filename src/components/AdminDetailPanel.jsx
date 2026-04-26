@@ -10,6 +10,10 @@ const DOC_CONFIG = [
   { label: 'Selfie', key: 'selfie', category: 'Biometric' },
 ];
 
+const FILE_BASE =
+  process.env.NEXT_PUBLIC_FILE_URL ||
+  "http://localhost:5001/uploads";
+
 const StatusBadge = ({ status }) => {
   const themes = {
     under_review:
@@ -274,19 +278,27 @@ export default function AdminDetailPanel({
         )}
       </aside>
 
-      {/* Document Preview Modal */}
-      {previewDoc && (
-        <div
-          className="fixed inset-0 bg-black/70 z-[60] flex items-center justify-center"
-          onClick={() => setPreviewDoc(null)}
-        >
-          <img
-            src={`${process.env.NEXT_PUBLIC_FILE_URL}/${previewDoc}`}
-            className="max-h-[85vh] max-w-[95vw] sm:max-w-[80vw] rounded-xl shadow-2xl object-contain"
-            alt="Document Preview"
-          />
-        </div>
-      )}
+{/* Document Preview Modal */}
+{previewDoc && (
+  <>
+    {console.log("Preview doc:", previewDoc)}
+
+    <div
+      className="fixed inset-0 bg-black/70 z-[60] flex items-center justify-center"
+      onClick={() => setPreviewDoc(null)}
+    >
+      <img
+        src={
+          previewDoc.startsWith("http")
+            ? previewDoc
+            : `${FILE_BASE}/${previewDoc}`
+        }
+        className="max-h-[85vh] max-w-[95vw] sm:max-w-[80vw] rounded-xl shadow-2xl object-contain"
+        alt="Document Preview"
+      />
+    </div>
+  </>
+)}
     </>
   );
 }
